@@ -29,8 +29,7 @@ An application using the model and estimation strategy approach: http://constell
 # Generate a random graph with covariates
 gr <- generateGraph();
 #TODO
+```
 
 ## License
-
 Copyright (C) 2011 Hugo Zanghi
-
