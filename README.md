@@ -18,6 +18,7 @@ but not required.
 representation of the ICL evolution is available
 
 Further details concerning the models (and estimation stategies) can be found in:
+
 *  Clustering based on random graph model embedding vertex features (2010): http://www.sciencedirect.com/science/article/pii/S0167865510000413
 *  Model Based approaches for uncovering Web structures (2010): http://stat.genopole.cnrs.fr/_media/publications/zanghi.pdf
 
