@@ -1,3 +1,5 @@
+#  cohsmix
+
 An R package called CohsMix for Covariates in Hidden Structure Using
 Mixture models provides variational EM algorithms for the three proposed CohsMix models. 
 Theses algorithms allow to detect hidden structure and estimate the model parameters.
