@@ -3,7 +3,7 @@
 ## SortMatrix
 ##
 ## INPUT :	node.classes	-> Vector of the classes
-##	   	Matrix		-> Matrix we want to sort according 
+##	   	Matrix		-> Matrix we want to sort according
 ##			   	   to the classes
 ##
 ## OUTPUT : 	The sorted matrix
@@ -19,7 +19,7 @@ SortMatrix<-function(node.classes, Matrix){
 
 ##------------------------------------------------------------
 ##
-## TauInit 
+## TauInit
 ##
 ## INPUT : g :cmgraph
 ##
@@ -34,7 +34,7 @@ TauInit<-function(g) {
 ## __________________________________________________________
 ##
 ## getCluster
-## 
+##
 ## __________________________________________________________
 
 getCluster <-function(Tau){
@@ -97,7 +97,7 @@ randError<-function(x, y) {
 ClusteringCoef <- function(X, node.classes){
   prop  <- 0;
   clust <- 0;
-  
+
   for (i in 1:length(node.classes)){
     for (j in 1:length(node.classes)){
       for (k in 1:length(node.classes)){
@@ -128,7 +128,7 @@ ClusteringCoef <- function(X, node.classes){
 
 Modularity <- function(graph, clus) {
   m <- sum(graph);
-  maxId <- dim(graph)[1];	
+  maxId <- dim(graph)[1];
   tmp <- 0;
   out <- apply(graph, 1 , sum)  ;
   for (i in 1:maxId) {

@@ -6,24 +6,24 @@
 ##	  Y		-> Symilarity matrix
 ##	  X		-> Adjacency matrix
 ##	  NbIteration	-> Number of iteration
-##	  SelfLoop	-> Equal to FALSE if the self loops 
+##	  SelfLoop	-> Equal to FALSE if the self loops
 ##				   are not considered
 ##
-## OUTPUT : 	MuEstimated1	-> Matrix of the estimation of the 
+## OUTPUT : 	MuEstimated1	-> Matrix of the estimation of the
 ##				   mean for X=1
-##		MuEstimated2	-> Matrix of the estimation of the 
+##		MuEstimated2	-> Matrix of the estimation of the
 ##				   mean for X=0
 ##		VarianceEstimated->Estimation of the variance
-##		PIEstimated	-> Estimation of the connectivity 
+##		PIEstimated	-> Estimation of the connectivity
 ##				   matrix
 ##		AlphaEstimated	-> Estimation of the probability
 ##				   for a node i to belong to class q
 ##		TauEstimated	-> Estimation of the variational paramater
-##		EJ		-> Value of the expected value of J for 
+##		EJ		-> Value of the expected value of J for
 ##				   each iteration
-##		
+##
 ## => Plot of EJ curve and network with the estimated classes
-## 
+##
 ## __________________________________________________________
 
 EMalgorithmXZ <- function(Tau, Y, X, NbIteration, Plot=TRUE, SelfLoop=FALSE){
@@ -73,7 +73,7 @@ EMalgorithmXZ <- function(Tau, Y, X, NbIteration, Plot=TRUE, SelfLoop=FALSE){
    Mutemp1[Mutemp1 < exp(mincut) ] <- exp(mincut);
    ## MuEstimated1 ##
    MuEstimated1=Mutemp1/(divMu1)
-	
+
    if (length(which(MuEstimated1==Inf))>0){
      warning("Empty class problem when the number of classes is: ",nbGroup)
      break();
@@ -99,12 +99,12 @@ EMalgorithmXZ <- function(Tau, Y, X, NbIteration, Plot=TRUE, SelfLoop=FALSE){
    if (length(PIEstimated[is.nan(PIEstimated) == TRUE]) > 0) {
      warning("Empty class problem when the number of classes is: ",nbGroup);
      print("PiNAN");
-   }	
+   }
    PIEstimated[is.nan(PIEstimated) ==TRUE] <- exp(mincut);
    if (length(PIEstimated[PIEstimated == 'Inf']) > 0) {
      warning("Empty class problem when the number of classes is: ",nbGroup);
      print("PiInf");
-   }	
+   }
    PIEstimated[PIEstimated == 'Inf'] <- exp(mincut);
    PIEstimated[PIEstimated == 1] <- (1-exp(mincut));
    PIEstimated[PIEstimated < exp(mincut)] <- exp(mincut);
@@ -116,7 +116,7 @@ EMalgorithmXZ <- function(Tau, Y, X, NbIteration, Plot=TRUE, SelfLoop=FALSE){
    Ysquare <- Y*Y;
    Musquare0 <- MuEstimated1 * MuEstimated1;
    Musquare1 <- MuEstimated2 * MuEstimated2;
-   Variancetemp = TauPrim %*% Ysquare %*% TauEstimated - 2*MuEstimated2*(TauPrim%*%Y%*%TauEstimated) + 
+   Variancetemp = TauPrim %*% Ysquare %*% TauEstimated - 2*MuEstimated2*(TauPrim%*%Y%*%TauEstimated) +
                  Musquare1*div +(-2*MuEstimated1*Mutemp1 + Musquare0*divMu1)-(-2*MuEstimated2*Mutemp1 + Musquare1*divMu1);
 
    VarianceEstimated = sum(Variancetemp)/sum(div);
@@ -153,7 +153,7 @@ EMalgorithmXZ <- function(Tau, Y, X, NbIteration, Plot=TRUE, SelfLoop=FALSE){
    #print(proc.time() - ptm);
    }
    cat("\n")
-   
+
    if (Plot==TRUE){
      #x11()
      par(mfrow = c(1,2));
@@ -183,15 +183,15 @@ EMalgorithmXZ <- function(Tau, Y, X, NbIteration, Plot=TRUE, SelfLoop=FALSE){
 ## INPUT: Tau		-> Initial classification matrix
 ##	  Y		-> Symilarity matrix
 ##	  X		-> Adjacency matrix
-##	  MuX0		-> Matrix of the estimations of the 
+##	  MuX0		-> Matrix of the estimations of the
 ##			   means for X=0
-## 	  MuX1		-> Matrix of the estimations of the 
+## 	  MuX1		-> Matrix of the estimations of the
 ##			   means for X=1
 ##	  PI		-> Connectivity matrix
 ##	  Alpha		-> Vector  of the probability
 ##	         	   for a node i to belong to class q
 ##	  Variance	-> Variance of the random variable Y
-##	  SelfLoop	-> Equal to FALSE if the self loops 
+##	  SelfLoop	-> Equal to FALSE if the self loops
 ##			   are not considered
 ##
 ## OUTPUT : 	TauEstimated	-> Estimation of the variational paramater
@@ -201,7 +201,7 @@ EMalgorithmXZ <- function(Tau, Y, X, NbIteration, Plot=TRUE, SelfLoop=FALSE){
 EstimTauXZ <- function(Tau,Y,X,	MuX0,MuX1, PI, Alpha, Variance, SelfLoop = FALSE, C = FALSE){
    nbGroup <- dim(Tau)[2];
    nbNodes <- dim(Tau)[1];
-   
+
    TauPrim <- t(Tau);
    TauEstimated <- Tau;
    LogTauEstimated <- matrix(0,nrow=nbNodes,ncol=nbGroup);
@@ -229,7 +229,7 @@ EstimTauXZ <- function(Tau,Y,X,	MuX0,MuX1, PI, Alpha, Variance, SelfLoop = FALSE
      PIPrim[q,] <- pmax(PIPrim[q, ], exp(mincut));
      Alpha[q]   <- pmin(Alpha[q], exp(maxcut));
      Alpha[q]   <- pmax(Alpha[q], exp(mincut));
-   }	
+   }
    ## stupid ? ##
    HPrim[HPrim == "-Inf"] <- exp(mincut);
    HPrim[HPrim == "Inf"] <- exp(mincut);
@@ -239,7 +239,7 @@ EstimTauXZ <- function(Tau,Y,X,	MuX0,MuX1, PI, Alpha, Variance, SelfLoop = FALSE
    H[H == "Inf"] <- exp(mincut);
    H[is.nan(H) == TRUE] <- exp(mincut);
    H[H < exp(mincut) ] <- exp(mincut);
-   ##         ##	
+   ##         ##
 
    LogAlpha  <- log(Alpha);
    LogPIPrim <- log(PIPrim);
@@ -266,7 +266,7 @@ EstimTauXZ <- function(Tau,Y,X,	MuX0,MuX1, PI, Alpha, Variance, SelfLoop = FALSE
      for (q in 1:nbGroup){
         Bern <- BernMatrix[i,q];
 	Norm <-  (-1/2 * log(2*pi*Variance) * sumTau - 1/(2*Variance) * (rowSumYsquareTau[i] + rowSumMusquare0TauPrim[q] -2 * (YTauMu0Prim)[i,q])) +
- 1/(2*Variance) * (-(rowSumXY2Tau[i] -2*(XYTauMu1Prim)[i,q] + (XTauMusquare1Prim)[i,q]) + (rowSumXY2Tau[i] -2*(XYTauMu0Prim)[i,q] + (XTauMusquare0Prim)[i,q]));		
+ 1/(2*Variance) * (-(rowSumXY2Tau[i] -2*(XYTauMu1Prim)[i,q] + (XTauMusquare1Prim)[i,q]) + (rowSumXY2Tau[i] -2*(XYTauMu0Prim)[i,q] + (XTauMusquare0Prim)[i,q]));
         if (SelfLoop == FALSE){
            EgaliteIJ <-  (1/2 * log(2*pi*Variance) * rowSumTau[i] + 1/(2*Variance) * (TauMusquare0Prim)[i,q] - (TauLogHPrim)[i,q])
 	   LogTauEstimated[i,q] <-  LogAlpha[q] + Bern + Norm + EgaliteIJ;
@@ -292,15 +292,15 @@ EstimTauXZ <- function(Tau,Y,X,	MuX0,MuX1, PI, Alpha, Variance, SelfLoop = FALSE
 ## INPUT :	Tau		-> Initial classification matrix
 ##		Y		-> Symilarity matrix
 ##		X		-> Adjacency matrix
-##		MuX0		-> Matrix of the estimations of the 
+##		MuX0		-> Matrix of the estimations of the
 ##				   means for X=0
-## 		MuX1		-> Matrix of the estimations of the 
+## 		MuX1		-> Matrix of the estimations of the
 ##				   means for X=1
 ##		PI		-> Connectivity matrix
 ##		Alpha		-> Vector  of the probability
 ##				   for a node i to belong to class q
 ##		Variance	-> Variance of the random variable Y
-##		SelfLoop	-> Equal to FALSE if the self loops 
+##		SelfLoop	-> Equal to FALSE if the self loops
 ##				   are not considered
 ##
 ## OUTPUT : 	Expected	-> Expected value of J
@@ -337,7 +337,7 @@ ExpectedJXZ <-function(Tau, Y, X, MuX0, MuX1, PI, Alpha, Variance, SelfLoop=FALS
    HPrim[HPrim < exp(mincut) ] <- exp(mincut);
    H[is.nan(H) == TRUE] <- exp(mincut);
    H[H < exp(mincut) ] <- exp(mincut);
-   ## ##########	
+   ## ##########
    for (i in 1:nbNodes){
      Tau[i, ] <- pmin(Tau[i, ], exp(maxcut))
      Tau[i, ] <- pmax(Tau[i, ], exp(mincut))
@@ -352,7 +352,7 @@ ExpectedJXZ <-function(Tau, Y, X, MuX0, MuX1, PI, Alpha, Variance, SelfLoop=FALS
    Bern2 <-  TauPrim%*%(1-X)%*%Tau;
    Ysquare <- Y*Y;
    Musquare0 <- MuX0 * MuX0;
-   Musquare1 <- MuX1 * MuX1;	
+   Musquare1 <- MuX1 * MuX1;
    if (SelfLoop == FALSE){
      div <- t(t(as.vector(colSums(Tau))))%*%colSums(Tau)-(TauPrim%*%Tau);
    } else {
