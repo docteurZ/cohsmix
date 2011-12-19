@@ -9,7 +9,7 @@
 ## __________________________________________________________
 
 RepresentationXGroup <- function(x, cluster){
-  x <- SortMatrix(cluster, x); # reorganize the adjacency matrix  
+  x <- SortMatrix(cluster, x); # reorganize the adjacency matrix
   dim(x)[1]->n;
   m<-which(x==1,arr.ind=TRUE);
   plot(1, 1, xlim = c(0, n + 1), ylim = c(n + 1, 0), type = "n", axes= FALSE,xlab="classes",ylab="classes",main="Reorganized Adjacency matrix")
@@ -27,7 +27,7 @@ RepresentationXGroup <- function(x, cluster){
 ## INPUT: X: Adjency matrix
 ##        Y: Similarity matrix
 ##	  node.classes: Vector of the classes
-##	  Sigma: Variance	
+##	  Sigma: Variance
 ##
 ## Represention of the variables Yij and the affiliation matrix
 ## __________________________________________________________
