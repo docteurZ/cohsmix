@@ -4,7 +4,7 @@
 ##
 ## ----------------------------------------------------------
 
-class.ind<-function (cl) { 
+class.ind<-function (cl) {
   n  <- length(cl);
   cl <- as.factor(cl);
   x  <- matrix(0, n, length(levels(cl)));
@@ -23,7 +23,7 @@ class.ind<-function (cl) {
 ##        lambda: proba of edge given  same classe
 ##        epsilon: proba of edge given two different classes
 ## OUTPUT x: adjacency matrix
-##        cluster: class vector   
+##        cluster: class vector
 ## ----------------------------------------------------------
 
 graph.affiliation<-function(n=100,alphaVect=c(1/2,1/2),lambda=0.7,epsilon=0.05) {
@@ -37,12 +37,12 @@ graph.affiliation<-function(n=100,alphaVect=c(1/2,1/2),lambda=0.7,epsilon=0.05) 
      # if i and j in same class
        if (which.max(Z[i,])  == which.max(Z[j,])) p<-lambda else  p<-epsilon
           if ((rbinom(1,1,p))&(i != j)) {
-            x[i,j]<-1; 
+            x[i,j]<-1;
             x[j,i]<-1;
           }
       }
    }
-  return(list(x=x,cluster=apply(Z,1,which.max)) )   
+  return(list(x=x,cluster=apply(Z,1,which.max)) )
 }
 
 
@@ -72,19 +72,19 @@ CreateMu <- function(num.classes, Mu1, Mu2) {
 ## INPUT: node.classes: Vector of node class labels
 ##	 MU: Matrix of the means
 ##	 Sigma: Standard Error
-##	
+##
 ## OUTPUT: Y: Similarity matrix
 ##
 ## Simulate a similarity matrix conditionally to Z
 ## __________________________________________________________
 
 SimDataYcondZ <- function(node.classes, Mu, Sigma, SelfLoop = FALSE) {
-  num.nodes <- length (node.classes);  
+  num.nodes <- length (node.classes);
   Y <- matrix(0, num.nodes, num.nodes);
   for (i in 1:num.nodes) {
     for (j in 1:i) {
       Y[i,j] <- rnorm(1,Mu[ node.classes[i], node.classes[j]], Sigma)
-      Y[j,i] <- Y[i,j]  
+      Y[j,i] <- Y[i,j]
     }
     if (SelfLoop == FALSE){
       Y[i,i] <- 0;

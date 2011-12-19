@@ -6,20 +6,20 @@
 ##	  Y		-> Matrix of the covariates
 ##	  X		-> Adjacency matrix
 ##        NbIteration	-> Number of iteration
-##        SelfLoop	-> Equal to FALSE if the self loops 
+##        SelfLoop	-> Equal to FALSE if the self loops
 ##			   are not considered
 ##
-## OUTPUT: Mu		-> Matrix of the estimation of the mean 
+## OUTPUT: Mu		-> Matrix of the estimation of the mean
 ##	   VarCovEstimated	-> Estimation variance-covariance matrix
 ##	   PIEstimated	-> Estimation of the connectivity matrix
 ##	   AlphaEstimated	-> Estimation of the probability
 ##			           for a node i to belong to class q
 ##         TauEstimated	-> Estimation of the variational paramater
-##	   EJ		-> Value of the expected value of J for 
+##	   EJ		-> Value of the expected value of J for
 ##			   each iteration
-##		
+##
 ## => Plot of EJ curve and network with the estimated classe
-## 
+##
 ## __________________________________________________________
 
 EMalgorithmNodes <-function(Tau,Y, X, NbIteration, Plot=TRUE, SelfLoop=FALSE){
@@ -45,7 +45,7 @@ EMalgorithmNodes <-function(Tau,Y, X, NbIteration, Plot=TRUE, SelfLoop=FALSE){
        div = t(t(as.vector(colSums(TauEstimated))))%*%colSums(TauEstimated)-(TauPrim%*%TauEstimated);
      } else {
        div = t(t(as.vector(colSums(TauEstimated))))%*%colSums(TauEstimated);
-     }		
+     }
 ####### Estimation of the mean Mu for the Q groups#######
     for (q in 1:nbGroup) {
       Mu[,q]<-  colSums(Y*TauEstimated[,q])/sum(TauEstimated[,q])
@@ -54,11 +54,11 @@ EMalgorithmNodes <-function(Tau,Y, X, NbIteration, Plot=TRUE, SelfLoop=FALSE){
 ####### Estimation of PI #######
    PItemp <- (TauPrim%*%X%*%TauEstimated);
    PIEstimated <- PItemp/(div);
-   PIEstimated[is.nan(PIEstimated) ==TRUE] <- exp(mincut);	
+   PIEstimated[is.nan(PIEstimated) ==TRUE] <- exp(mincut);
    PIEstimated[PIEstimated == 'Inf'] <- exp(mincut);
    PIEstimated[PIEstimated == 1] <- (1-exp(mincut));
    PIEstimated[PIEstimated < exp(mincut)] <- exp(mincut);
-		
+
 ####### Estimation of Alpha #######
    AlphaEstimated <- facteur %*% TauEstimated;
 ####### Estimation of the variance-covariance matrix #######
@@ -84,13 +84,13 @@ EMalgorithmNodes <-function(Tau,Y, X, NbIteration, Plot=TRUE, SelfLoop=FALSE){
       break();
     }
    }
-		
+
 ####### Estimation of Tau #######
    Tautemp <- EstimTauNodes(TauEstimated,Y,X,Mu,PIEstimated,AlphaEstimated,VarCovEstimated,SelfLoop=SelfLoop);
-   TauEstimated <- Tautemp$TauEstimated;	
+   TauEstimated <- Tautemp$TauEstimated;
   }
   cat("\n");
-  
+
   if (Plot==TRUE){
    #################### Representation #######################
    #x11()
@@ -117,17 +117,17 @@ EMalgorithmNodes <-function(Tau,Y, X, NbIteration, Plot=TRUE, SelfLoop=FALSE){
 ## INPUT: Tau		-> Initial classification matrix
 ##	  Y		-> Matrix of the covariates
 ##	  X		-> Adjacency matrix
-##	  Mu		-> Matrix of the estimations of the 
+##	  Mu		-> Matrix of the estimations of the
 ##			   means
 ##	  PI		-> Connectivity matrix
 ##	  Alpha		-> Vector  of the probability
 ##	 		   for a node i to belong to class q
 ##	  VarCov		-> Variance-Covariance matrix
-##	  SelfLoop	-> Equal to FALSE if the self loops 
+##	  SelfLoop	-> Equal to FALSE if the self loops
 ##			   are not considered
 ##
 ## OUTPUT : 	TauEstimated	-> Estimation of the variational paramater
-##				   according to the inputs 
+##				   according to the inputs
 ## __________________________________________________________
 
 EstimTauNodes <-function(Tau, Y, X, Mu, PI, Alpha, VarCov, SelfLoop = FALSE){
@@ -149,18 +149,18 @@ EstimTauNodes <-function(Tau, Y, X, Mu, PI, Alpha, VarCov, SelfLoop = FALSE){
      PIPrim[q,] <- pmin(PIPrim[q, ], exp(maxcut));
      PIPrim[q,] <- pmax(PIPrim[q, ], exp(mincut));
      Alpha[q] <- pmin(Alpha[q], exp(maxcut));
-     Alpha[q] <- pmax(Alpha[q], exp(mincut));	
+     Alpha[q] <- pmax(Alpha[q], exp(mincut));
    }
 
    HPrim[is.nan(HPrim) == TRUE] <- exp(mincut);
    HPrim[HPrim < exp(mincut) ] <- exp(mincut);
    H[is.nan(H) == TRUE] <- exp(mincut);
-   H[H < exp(mincut) ] <- exp(mincut);	
+   H[H < exp(mincut) ] <- exp(mincut);
 
    LogAlpha <- log(Alpha);
    LogPIPrim <- log(PIPrim);
    LogHPrim <-  log(HPrim);
-	
+
    BernMatrix = (((X%*%Tau)%*%(LogPIPrim)) + (((1-X)%*%Tau)%*%(LogHPrim)));
    TauLogHPrim <- Tau%*%LogHPrim;
    for (i in 1:nbNodes){
@@ -168,7 +168,7 @@ EstimTauNodes <-function(Tau, Y, X, Mu, PI, Alpha, VarCov, SelfLoop = FALSE){
        Bern <- BernMatrix[i,q];
        Norm <-  log(1/(2*pi^(nbNodes/2)*(detVar^(1/2))))-1/2 *(Y[i,] - Mu[,q])%*%VarCovInv%*%t(t((Y[i,] - Mu[,q])));
        EgaliteIJ <-  - TauLogHPrim[i,q];
-       if (SelfLoop == FALSE){ 
+       if (SelfLoop == FALSE){
           LogTauEstimated[i,q] <-  LogAlpha[q] + Bern + Norm + EgaliteIJ;
        } else {
           LogTauEstimated[i,q] <-  LogAlpha[q] + Bern + Norm;
@@ -185,7 +185,7 @@ EstimTauNodes <-function(Tau, Y, X, Mu, PI, Alpha, VarCov, SelfLoop = FALSE){
     TauEstimated[i, ] <- exp(LogTauEstimated[i, ]);
     Normalize <- 1/sum(TauEstimated[i,]);
     TauEstimated[i,] <- TauEstimated[i,] * Normalize;
-    TauEstimated[i, ][TauEstimated[i, ] < .Machine$double.xmin] <- .Machine$double.xmin;	
+    TauEstimated[i, ][TauEstimated[i, ] < .Machine$double.xmin] <- .Machine$double.xmin;
   }
   return( list(TauEstimated=TauEstimated));
 }
@@ -197,13 +197,13 @@ EstimTauNodes <-function(Tau, Y, X, Mu, PI, Alpha, VarCov, SelfLoop = FALSE){
 ## INPUT: Tau		-> Initial classification matrix
 ##	  Y		-> Matrix of the covariates
 ##	  X		-> Adjacency matrix
-##	  Mu		-> Matrix of the estimations of the 
+##	  Mu		-> Matrix of the estimations of the
 ##			   means
 ##	  PI		-> Connectivity matrix
 ##	  Alpha		-> Vector  of the probability
 ##			   for a node i to belong to class q
 ##	  VarCov		-> Variance-Covariance matrix
-##	  SelfLoop	-> Equal to FALSE if the self loops 
+##	  SelfLoop	-> Equal to FALSE if the self loops
 ##			   are not considered
 ##
 ## OUTPUT : 	Expected	-> Expected value of J
@@ -213,7 +213,7 @@ EstimTauNodes <-function(Tau, Y, X, Mu, PI, Alpha, VarCov, SelfLoop = FALSE){
 ExpectedJNodes <-function(Tau, Y, X, Mu, PI, Alpha, VarCov, SelfLoop=FALSE){
    nbGroup <- dim(Tau)[2];
    nbNodes <- dim(Y)[1];
-   
+
    entropieTemp <- 0;
    PIPrim <- t(PI);
    H <- 1-PI;
@@ -223,7 +223,7 @@ ExpectedJNodes <-function(Tau, Y, X, Mu, PI, Alpha, VarCov, SelfLoop=FALSE){
    VarCovInv <- ginv(VarCov);
    detVar <- det(VarCov);
    Norm<-0;
-	
+
 ################ Entropie #############################
     for(q in 1:nbGroup){
       HPrim[q,] <- pmin(HPrim[q, ], exp(maxcut));
@@ -237,11 +237,11 @@ ExpectedJNodes <-function(Tau, Y, X, Mu, PI, Alpha, VarCov, SelfLoop=FALSE){
       H[q,] <- pmin(H[q,], exp(maxcut));
       H[q,] <- pmax(H[q,], exp(mincut));
     }
-    
+
     HPrim[is.nan(HPrim) == TRUE] <- exp(mincut);
     HPrim[HPrim < exp(mincut) ] <- exp(mincut);
     H[is.nan(H) == TRUE] <- exp(mincut);
-    H[H < exp(mincut) ] <- exp(mincut);	
+    H[H < exp(mincut) ] <- exp(mincut);
     for(i in 1:nbNodes){
       Tau[i, ] <- pmin(Tau[i, ], exp(maxcut));
       Tau[i, ] <- pmax(Tau[i, ], exp(mincut));
@@ -274,6 +274,6 @@ ExpectedJNodes <-function(Tau, Y, X, Mu, PI, Alpha, VarCov, SelfLoop=FALSE){
        print(entropie);
     } else {
       Expected <- sum(Tau%*%AlphaPrim) + sum(Bern1*log(PI) + Bern2*log(H)) +sum(Norm)- entropie;
-    }	
+    }
   return(Expected);
 }

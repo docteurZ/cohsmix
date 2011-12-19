@@ -6,13 +6,13 @@
 ##	  X		-> Adjacency matrix
 ##	  Qmax		-> Maximal number of classes
 ##	  NbIteration	-> Number of iteration
-##	  Plot		-> Equal to TRUE if we want a 
+##	  Plot		-> Equal to TRUE if we want a
 ##	         	   plot of ICL
-##	  SelfLoop	-> Equal to FALSE if the self loops 
+##	  SelfLoop	-> Equal to FALSE if the self loops
 ##			   are not considered
 ## OUTPUT: 	Value of ICL criterion for each number of classes
-##		
-## => Plot of ICL curve 
+##
+## => Plot of ICL curve
 ##
 ## Calculation of the ICL when value of Y depends on the edges
 ## __________________________________________________________
@@ -73,13 +73,13 @@ ICLXZ <-function(Y, X, Qmin, Qmax, NbIteration, loop = 10, Plot=TRUE, SelfLoop=F
       alphaPart <- sum(TauEstimated%*%AlphaPrim);
       if (SelfLoop == FALSE){
         edgePart <- sum(Bern1*log(PI) + Bern2*log(H))-sum((TauPrim%*%TauEstimated)*log(H))- 1/2 *log(2*pi*Variance)* sum(div);
-        covPart <-  sum((1/(2*Variance)) * (-(TauPrim %*% Ysquare %*% TauEstimated -2*MuX0*(TauPrim%*%Y%*%TauEstimated) + Musquare1*div) 
-                    +(-2*MuX0*Mutemp1 + Musquare1*divMu1)-(-2*MuX1*Mutemp1 + Musquare2*divMu1)));           
+        covPart <-  sum((1/(2*Variance)) * (-(TauPrim %*% Ysquare %*% TauEstimated -2*MuX0*(TauPrim%*%Y%*%TauEstimated) + Musquare1*div)
+                    +(-2*MuX0*Mutemp1 + Musquare1*divMu1)-(-2*MuX1*Mutemp1 + Musquare2*divMu1)));
         LogLikelihood <- alphaPart + edgePart + covPart;
      } else {
         edgePart <- sum(Bern1*log(PI) + Bern2*log(H))- 1/2 *log(2*pi*Variance)* sum(div);
-        covPart  <- sum((1/(2*Variance)) * (-(TauPrim %*% Ysquare %*% TauEstimated -2*MuX0*(TauPrim%*%Y%*%TauEstimated) + Musquare1*div) 
-                    +(-2*MuX0*Mutemp1 + Musquare1*divMu1)-(-2*MuX1*Mutemp1 + Musquare2*divMu1)));                     
+        covPart  <- sum((1/(2*Variance)) * (-(TauPrim %*% Ysquare %*% TauEstimated -2*MuX0*(TauPrim%*%Y%*%TauEstimated) + Musquare1*div)
+                    +(-2*MuX0*Mutemp1 + Musquare1*divMu1)-(-2*MuX1*Mutemp1 + Musquare2*divMu1)));
         LogLikelihood <- alphaPart + edgePart + covPart;
      }
 
@@ -132,16 +132,16 @@ ICLXZ <-function(Y, X, Qmin, Qmax, NbIteration, loop = 10, Plot=TRUE, SelfLoop=F
 ##		X		-> Adjacency matrix
 ##		Qmax		-> Maximal number of classes
 ##		NbIteration	-> Number of iteration
-##		Plot		-> Equal to TRUE if we want a 
+##		Plot		-> Equal to TRUE if we want a
 ##				   plot of ICL
-##		SelfLoop	-> Equal to FALSE if the self loops 
+##		SelfLoop	-> Equal to FALSE if the self loops
 ##				   are not considered
 ##
 ## OUTPUT : 	Value of ICL criterion for each number of classes
-##		
+##
 ## => Plot of ICL curve
 ##
-## Calculation of the ICL when value of Y does not 
+## Calculation of the ICL when value of Y does not
 ## depends on the edges
 ## __________________________________________________________
 
@@ -190,10 +190,10 @@ ICLZ <-function(Y, X, Qmin, Qmax, NbIteration, loop = 10, Plot=TRUE, SelfLoop=FA
        Ysquare <- Y*Y;
        Musquare1 <- MuX0 * MuX0;
        if (SelfLoop == FALSE){
-         LogLikelihood= sum(TauEstimated%*%AlphaPrim) + sum(Bern1*log(PI) + Bern2*log(H))-sum((TauPrim%*%TauEstimated)*log(H)) 
+         LogLikelihood= sum(TauEstimated%*%AlphaPrim) + sum(Bern1*log(PI) + Bern2*log(H))-sum((TauPrim%*%TauEstimated)*log(H))
           - 1/2 *log(2*pi*Variance)* sum(div) -sum((1/(2*Variance)) * (TauPrim %*% Ysquare %*% TauEstimated -2*MuX0*(TauPrim%*%Y%*%TauEstimated) + Musquare1*div));
        } else {
-         LogLikelihood= sum(TauEstimated%*%AlphaPrim) + sum(Bern1*log(PI) + Bern2*log(H)) 
+         LogLikelihood= sum(TauEstimated%*%AlphaPrim) + sum(Bern1*log(PI) + Bern2*log(H))
           + 1/2 *log(2*pi*Variance)* sum(div) +sum((1/(2*Variance)) * (TauPrim %*% Ysquare %*% TauEstimated -2*MuX0*(TauPrim%*%Y%*%TauEstimated) + Musquare1*div));
        }
        TempICL <- LogLikelihood - (q-1)*log(nbNodes) -log(nbNodes*(nbNodes-1)/2)-2*q*q*log(nbNodes*(nbNodes-1)/2);
@@ -231,16 +231,16 @@ ICLZ <-function(Y, X, Qmin, Qmax, NbIteration, loop = 10, Plot=TRUE, SelfLoop=FA
 ##	  X		-> Adjacency matrix
 ##	  Qmax		-> Maximal number of classes
 ##	  NbIteration	-> Number of iteration
-##	  Plot		-> Equal to TRUE if we want a 
+##	  Plot		-> Equal to TRUE if we want a
 ##	 		   plot of ICL
-##	  SelfLoop	-> Equal to FALSE if the self loops 
+##	  SelfLoop	-> Equal to FALSE if the self loops
 ##			   are not considered
 ##
 ## OUTPUT : 	Value of ICL criterion for each number of classes
-##		
+##
 ## => Plot of ICL curve
 ##
-## Calculation of the ICL when value of Y does not 
+## Calculation of the ICL when value of Y does not
 ## depends on the edges
 ## __________________________________________________________
 
@@ -250,7 +250,7 @@ ICLNodes <-function(Y, X, Qmin, Qmax, NbIteration, loop = 10, Plot=TRUE, SelfLoo
    result <- 0;
    TempEst <- 0;
    resultEM <- vector(mode="list",length=((Qmax-Qmin)+1));
-   
+
    for (q in Qmin : Qmax) {
       maxcut <- log(.Machine$double.xmax) - log(q);
       mincut <- log(.Machine$double.xmin);
@@ -265,17 +265,17 @@ ICLNodes <-function(Y, X, Qmin, Qmax, NbIteration, loop = 10, Plot=TRUE, SelfLoo
         L2 <- LaplaceMatrix(X);
         Lsum <- L1 + L2;
         sc <- spectralClustering(Lsum, q);
-        Tau <- class.ind(sc$cluster); 
-        #Tau <- t(rmultinom(size=1,rep(1/q,q),n=nbNodes));	
-        
+        Tau <- class.ind(sc$cluster);
+        #Tau <- t(rmultinom(size=1,rep(1/q,q),n=nbNodes));
+
         CalculEst <- EMalgorithmNodes(Tau,Y,X,NbIteration,Plot=FALSE,SelfLoop=FALSE);
         TauEstimated <- CalculEst$TauEstimated;
         TauEstimated[,q] <- pmin(TauEstimated[,q], exp(maxcut));
         TauEstimated[,q] <- pmax(TauEstimated[,q], exp(mincut));
-	
+
         TauPrim <- t(TauEstimated);
         div <- t(t(as.vector(colSums(TauEstimated))))%*%colSums(TauEstimated)-(TauPrim%*%TauEstimated);
-        
+
         Alpha <- CalculEst$AlphaEstimated;
         VarCov <- CalculEst$VarCovEstimated;
         VarCovInv <- ginv(VarCov);
@@ -287,13 +287,13 @@ ICLNodes <-function(Y, X, Qmin, Qmax, NbIteration, loop = 10, Plot=TRUE, SelfLoo
         H[,q] <- pmin(H[,q], exp(maxcut));
         PI[,q] <- pmax(PI[,q], exp(mincut));
         H[,q] <- pmax(H[,q], exp(mincut));
-	
+
         AlphaPrim <- t(Alpha);
         TauPrim <- t(TauEstimated);
 
         Bern1 <- TauPrim%*%X%*%TauEstimated;
         Bern2 <-  TauPrim%*%(1-X)%*%TauEstimated;
-			
+
         for (i in 1:nbNodes){
           for (h in 1:q){
              tmpNorm <- TauEstimated[i,h]*(log(1/(2*pi^(nbNodes/2)*detVar^(1/2)))-1/2 *((Y[i,] - Mu[,h])%*%VarCovInv)%*%t(t((Y[i,] - Mu[,h]))));
@@ -304,14 +304,14 @@ ICLNodes <-function(Y, X, Qmin, Qmax, NbIteration, loop = 10, Plot=TRUE, SelfLoo
              #print(Norm);
 	   }
          }
-			
+
          LogLikelihood <- sum(TauEstimated%*%AlphaPrim) + sum(Bern1*log(PI) + Bern2*log(H))-sum((TauPrim%*%TauEstimated)*log(H)) + sum(Norm);
 
          TempICL <- LogLikelihood - (q-1)*log(nbNodes)     #alpha
                         - nbCov*(nbCov-1)*log(nbNodes*(nbNodes-1)/2)  # zeta
                          -q*(q-1)*log(nbNodes*(nbNodes-1)/2)/2 #pi
                          - q*nbCov*log(nbNodes*(nbNodes-1)/2); #sigma
-			
+
          if (is.nan(TempICL)==TRUE){TempICL<-(-exp(maxcut))}
            ICL  <- c(ICL,TempICL)
            if (TempICL>=max(ICL[2:length(ICL)])){
